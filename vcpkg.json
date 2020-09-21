@@ -1,0 +1,16 @@
+{
+  "name": "dolin",
+  "version-string": "0.1.0",
+  "port-version": 6,
+  "homepage": "https://github.com/euiko/dolin",
+  "description": "Yet another game engine for learning purpose.",
+  "dependencies": [
+    "capnproto",
+    "fplus",
+    "mimalloc",
+    "magic-enum",
+    "ctre",
+    "rapidjson",
+    "spdlog"
+  ]
+}
