@@ -1,8 +1,2 @@
-# Dolin - Async Modular Game Engine
-
-## Overview
-Yet another game engine 
-## Roadmap
-
-## Usage
-*TODO*
+# Pondasi
+Some useful reusable library for building apps that are personally being used.

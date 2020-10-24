@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12.0)
+cmake_minimum_required(VERSION 3.13.0)
 
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
@@ -20,7 +20,8 @@ include(CTest)
 enable_testing()
 
 include_directories(${CMAKE_SOURCE_DIR})
-add_compile_options(-fno-exceptions)
+add_compile_options(-fno-exceptions -fno-rtti)
+add_link_options(-static-libstdc++)
 
 add_subdirectory(pondasi)
 

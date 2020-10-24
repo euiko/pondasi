@@ -1,2 +1,5 @@
 add_subdirectory(app)
+add_subdirectory(logger)
 add_subdirectory(sync)
+add_subdirectory(meta)
+add_subdirectory(utility)
