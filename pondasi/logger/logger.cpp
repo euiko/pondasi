@@ -9,10 +9,8 @@ Logger* Logger::get(const std::string& name) {
   return logger_map[name].get();
 }
 
-Logger* Logger::add(const std::string& name, std::unique_ptr<Logger> logger) {
-  Logger* logger_ptr = logger.get();
+void Logger::add(std::unique_ptr<Logger> logger, const std::string& name) {
   logger_map[name] = std::move(logger);
-  return logger_ptr;
 }
 
 }

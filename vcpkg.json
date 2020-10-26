@@ -9,7 +9,6 @@
     "fplus",
     "mimalloc",
     "magic-enum",
-    "ctre",
     "rapidjson",
     "spdlog"
   ]
