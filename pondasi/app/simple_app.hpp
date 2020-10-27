@@ -10,7 +10,7 @@ public:
   template<typename Fn>
   inline explicit SimpleApp(Fn run_fn) : run_fn_(run_fn) {}
 
-  bool run() override;
+  bool start() override;
   bool stop() override;
 private:
   std::function<bool()> run_fn_;

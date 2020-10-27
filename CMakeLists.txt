@@ -24,6 +24,7 @@ add_compile_options(-fno-exceptions -fno-rtti)
 add_link_options(-static-libstdc++)
 
 add_subdirectory(pondasi)
+add_subdirectory(example)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

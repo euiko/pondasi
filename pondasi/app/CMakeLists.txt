@@ -6,6 +6,7 @@ set(HEADERS
 )
 
 set(SOURCES
+  app.cpp
   modular_app.cpp
   simple_app.cpp
 )
