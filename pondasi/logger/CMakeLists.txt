@@ -1,4 +1,4 @@
-option(LOGGER_WITH_SPDLOG "Enable spdlog logger" ON)
+option(LOGGER_ENABLE_SPDLOG "Enable spdlog logger" ON)
 
 set(SOURCES
   logger.cpp
@@ -7,7 +7,7 @@ set(SOURCES
 add_library(logger ${SOURCES})
 set(DEPENDENCIES)
 
-if(LOGGER_WITH_SPDLOG)
+if(LOGGER_ENABLE_SPDLOG)
   find_package(spdlog REQUIRED)
   add_library(logger_spdlog STATIC spdlog_logger.cpp)
   target_link_libraries(logger_spdlog PUBLIC spdlog::spdlog)
