@@ -83,8 +83,8 @@ class Result {
 
   // to hold storage of T and E
   union Storage {
-    Storage(){};
-    ~Storage(){};
+    Storage(){}; //NOLINT
+    ~Storage(){}; //NOLINT
     Ok t;
     Err e;
   } value_;

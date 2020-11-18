@@ -2,9 +2,10 @@
 #define __PONDASI_ENCODING_JSON_HPP__
 
 #include <pondasi/meta/metadata.hpp>
-#include <sstream>
 #include <rapidjson/prettywriter.h>
 #include <rapidjson/stringbuffer.h>
+#include <sstream>
+#include <type_traits>
 
 namespace pondasi {
 
@@ -54,6 +55,7 @@ namespace detail {
 template <typename T>
 inline std::string marshal(const T& t) {
   Metadata* metadata = ::pondasi::metadata<T, json::Tag>();
+  assert(metadata != nullptr);
 
   rapidjson::StringBuffer sb;
   JsonWriter writer(sb);
@@ -76,11 +78,58 @@ void marshal(JsonWriter& writer, double i);
 inline void marshal(JsonWriter& writer, float i) {
   marshal(writer, static_cast<double>(i));
 }
+
+template <typename T, typename = void>
+struct IsIterable : std::false_type {};
 template <typename T>
-inline void marshal(JsonWriter& writer, T&& t) {
-  std::stringstream ss;
-  ss << t;
-  writer.String(ss.str());
+struct IsIterable<T, std::void_t<decltype(std::declval<T>().begin()),
+                                 decltype(std::declval<T>().end())>>
+    : std::true_type {};
+
+template <typename T, typename = void>
+struct IsKeyValue : std::false_type {};
+template <typename T>
+struct IsKeyValue<T, std::void_t<decltype(std::declval<T>().begin()),
+                                 decltype(std::declval<T>().end()),
+                                 decltype(std::declval<T>().find(""))>>
+    : std::true_type {};
+template <typename T, typename = void>
+struct IsBoxed : std::false_type {};
+template <typename T>
+struct IsBoxed<T, std::void_t<decltype(std::declval<T>().get()),
+                                 decltype(std::declval<T>().operator->())>>
+    : std::true_type {};
+
+template <typename T>
+inline auto marshal(JsonWriter& writer, const T& t) {
+  if constexpr (IsKeyValue<T>::value) {
+    writer.StartObject();
+
+    for (auto&& [k, v] : t) {
+      writer.String(k);
+      marshal(writer, v);
+    }
+    writer.EndObject();
+  } else if constexpr (IsIterable<T>::value) {
+    writer.StartArray();
+    for (const auto& item : t) {
+      marshal(writer, item);
+    }
+    writer.EndArray();
+  } else if constexpr (IsBoxed<T>::value) {
+    marshal(writer, *t.get());
+  } else if constexpr (::pondasi::define_metadata<T, json::Tag>().size() != 0) {
+    Metadata* metadata = ::pondasi::metadata<T, json::Tag>();
+
+    writer.StartObject();
+    auto visitor = JsonVisitor(&writer, &t);
+    metadata->visit(visitor);
+    writer.EndObject();
+  } else {
+    std::stringstream ss;
+    ss << t;
+    writer.String(ss.str());
+  }
 }
 }  // namespace detail
 

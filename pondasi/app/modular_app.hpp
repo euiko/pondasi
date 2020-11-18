@@ -12,6 +12,7 @@ class ModularApp;
 using ModuleFactory = std::function<Module*()>;
 
 struct Module {
+  virtual ~Module() = default;
   virtual bool init() = 0;
   virtual void close() = 0;
 };
